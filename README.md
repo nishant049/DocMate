@@ -54,34 +54,3 @@ Create a .env file to store your credentials:
 3. Run `npm run dev` to get the project started.
 4. Open [http://localhost:5174](http://localhost:5174) (or the address shown in your console) in your web browser to view the app.
 
-## 🌍 How it looks
-
-<details>
-<summary><h3> 📸 - Demo Images </h3></summary>
-
-
-<img src='https://github.com/user-attachments/assets/768d1f94-29e3-4466-90c5-418278abb2ce' width="100%"/>
-
-#
-
-<img src='https://github.com/user-attachments/assets/c66e8a38-6c8f-4b07-ab43-4ede3c087a09' width="100%"/>
-
-#
-
-<img src='https://github.com/user-attachments/assets/6bc93c7b-2e47-414a-ac9c-f7abbe8871b4' width="100%"/>
-
-#
-
-<img src='https://github.com/user-attachments/assets/ba5625b0-2a40-4429-b3c8-e6a5f4e23676' width="100%"/>
-
-#
-
-<img src='https://github.com/user-attachments/assets/7d6f1afb-f767-4464-8189-33df6a1cc2b8' width="100%"/>
-
-#
-
-<img src='https://github.com/user-attachments/assets/c7d8da6e-6bc4-485a-a6ce-8ed52ceff819' width="100%"/>
-
-
-</details>
-
