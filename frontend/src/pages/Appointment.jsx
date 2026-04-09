@@ -4,12 +4,12 @@ import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets_frontend/assets'
 import RelatedDoctor from '../components/RelatedDoctor'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+import { api, getApiErrorMessage } from '../lib/api'
 
 const Appointment = () => {
 
   const { docId } = useParams()
-  const { doctors, currencySymbol, backendUrl, token, getDoctorsData } = useContext(AppContext)
+  const { doctors, currencySymbol, token, getDoctorsData } = useContext(AppContext)
 
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
@@ -93,7 +93,7 @@ const Appointment = () => {
 
       const slotDate = day + '_' + month + '_' + year
 
-      const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
+      const { data } = await api.post('/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
 
       if (data.success) {
         toast.success(data.message)
@@ -104,8 +104,8 @@ const Appointment = () => {
       }
 
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
   }
 

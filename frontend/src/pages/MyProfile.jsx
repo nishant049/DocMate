@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets_frontend/assets'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+import { api, getApiErrorMessage } from '../lib/api'
 
 const MyProfile = () => {
 
-  const { userData, setUserData, token, backendUrl, loadUserProfileData } = useContext(AppContext)
+  const { userData, setUserData, token, loadUserProfileData } = useContext(AppContext)
 
   const [isEdit, setIsEdit] = useState(false)
   const [image, setImage] = useState(false)
@@ -25,7 +25,7 @@ const MyProfile = () => {
 
       image && formData.append('image', image)
 
-      const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, { headers: { token } })
+      const { data } = await api.post('/api/user/update-profile', formData, { headers: { token } })
 
       if (data.success) {
         toast.success(data.message)
@@ -37,8 +37,8 @@ const MyProfile = () => {
       }
 
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import axios from 'axios'
 import { toast } from 'react-toastify'
+import { api, apiBaseUrl, getApiErrorMessage } from '../lib/api'
 
 export const AdminContext = createContext()
 
@@ -11,13 +11,13 @@ const AdminContextProvider = (props) => {
   const [appointments, setAppointments] = useState([])
   const [dashData, setDashData] = useState(false)
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL
+  const backendUrl = apiBaseUrl
 
   const getAllDoctors = async () => {
 
     try {
 
-      const { data } = await axios.post(backendUrl + '/api/admin/all-doctors', {}, { headers: { aToken } })
+      const { data } = await api.post('/api/admin/all-doctors', {}, { headers: { aToken } })
       if (data.success) {
         setDoctors(data.doctors)
         console.log(data.doctors)
@@ -26,7 +26,8 @@ const AdminContextProvider = (props) => {
       }
 
     } catch (error) {
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
   }
 
@@ -34,7 +35,7 @@ const AdminContextProvider = (props) => {
 
     try {
 
-      const { data } = await axios.post(backendUrl + '/api/admin/change-availability', { docId }, { headers: { aToken } })
+      const { data } = await api.post('/api/admin/change-availability', { docId }, { headers: { aToken } })
       if (data.success) {
         toast.success(data.message)
         getAllDoctors()
@@ -43,7 +44,8 @@ const AdminContextProvider = (props) => {
       }
 
     } catch (error) {
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }
@@ -52,7 +54,7 @@ const AdminContextProvider = (props) => {
 
     try {
 
-      const { data } = await axios.get(backendUrl, '/api/admin/appointments', { headers: { aToken } })
+      const { data } = await api.get('/api/admin/appointments', { headers: { aToken } })
 
       if (data.success) {
         setAppointments(data.appointments)
@@ -62,7 +64,8 @@ const AdminContextProvider = (props) => {
       }
 
     } catch (error) {
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }
@@ -71,7 +74,7 @@ const AdminContextProvider = (props) => {
 
     try {
 
-      const { data } = await axios.post(backendUrl + '/api/admin/cancel-appointment', { appointmentId }, { headers: { aToken } })
+      const { data } = await api.post('/api/admin/cancel-appointment', { appointmentId }, { headers: { aToken } })
 
       if (data.success) {
         toast.success(data.message)
@@ -81,7 +84,8 @@ const AdminContextProvider = (props) => {
       }
 
     } catch (error) {
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }
@@ -90,7 +94,7 @@ const AdminContextProvider = (props) => {
 
     try {
 
-      const { data } = await axios.get(backendUrl + '/api/admin/dashboard', { headers: { aToken } })
+      const { data } = await api.get('/api/admin/dashboard', { headers: { aToken } })
 
       if (data.success) {
         setDashData(data.dashData)
@@ -100,7 +104,8 @@ const AdminContextProvider = (props) => {
       }
 
     } catch (error) {
-      toast.error(data.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }

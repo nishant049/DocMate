@@ -1,15 +1,14 @@
 import React, { useContext, useState } from 'react'
-import { assets } from '../assets/assets_admin/assets'
 import { AdminContext } from '../context/AdminContext'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+import { api, getApiErrorMessage } from '../lib/api'
 
 const Login = () => {
 
   const [state, setState] = useState('Admin')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { setAToken, backendUrl } = useContext(AdminContext)
+  const { setAToken } = useContext(AdminContext)
 
   const onSubmitHandler = async (event) => {
     event.preventDefault()
@@ -17,7 +16,7 @@ const Login = () => {
     try {
 
       if (state === 'Admin') {
-        const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password })
+        const { data } = await api.post('/api/admin/login', { email, password })
         if (data.success) {
           localStorage.setItem('aToken', data.token)
           setAToken(data.token)
@@ -29,7 +28,8 @@ const Login = () => {
       }
 
     } catch (error) {
-
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
   }
 

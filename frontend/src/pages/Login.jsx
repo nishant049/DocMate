@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { api, getApiErrorMessage } from '../lib/api'
 
 const Login = () => {
 
-  const { backendUrl, token, setToken } = useContext(AppContext)
+  const { token, setToken } = useContext(AppContext)
   const navigate = useNavigate()
   const [state, setState] = useState('Sign Up')
   const [name, setName] = useState('')
@@ -18,8 +18,8 @@ const Login = () => {
 
     try {
 
-      if (state === 'Sign up') {
-        const { data } = await axios.post(backendUrl + '/api/user/register', { name, password, email })
+      if (state === 'Sign Up') {
+        const { data } = await api.post('/api/user/register', { name, password, email })
         if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
@@ -27,7 +27,7 @@ const Login = () => {
           toast.error(data.message)
         }
       } else {
-        const { data } = await axios.post(backendUrl + '/api/user/login', { email, password })
+        const { data } = await api.post('/api/user/login', { email, password })
         if (data.success) {
           localStorage.setItem('token', data.token)
           setToken(data.token)
@@ -37,7 +37,8 @@ const Login = () => {
       }
 
     } catch (error) {
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
   }
 

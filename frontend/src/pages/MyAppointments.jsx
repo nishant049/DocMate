@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../context/AppContext'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+import { api, getApiErrorMessage } from '../lib/api'
 
 const MyAppointments = () => {
 
-  const { backendUrl, token, getDoctorsData } = useContext(AppContext)
+  const { token, getDoctorsData } = useContext(AppContext)
   const [appointments, setAppointments] = useState([])
   const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -18,7 +18,7 @@ const MyAppointments = () => {
 
     try {
 
-      const { data } = await axios.get(backendUrl + '/api/user/appointments', { headers: { token } })
+      const { data } = await api.get('/api/user/appointments', { headers: { token } })
 
       if (data.success) {
         setAppointments(data.appointments.reverse())
@@ -26,8 +26,8 @@ const MyAppointments = () => {
       }
 
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }
@@ -36,7 +36,7 @@ const MyAppointments = () => {
 
     try {
 
-      const { data } = await axios.post(backendUrl + '/api/user/cancel-appointment', { appointmentId }, { headers: { token } })
+      const { data } = await api.post('/api/user/cancel-appointment', { appointmentId }, { headers: { token } })
 
       if (data.success) {
         toast.success(data.message)
@@ -47,8 +47,8 @@ const MyAppointments = () => {
       }
 
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.error('FULL ERROR:', error)
+      toast.error(getApiErrorMessage(error))
     }
 
   }
